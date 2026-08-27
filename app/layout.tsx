@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "MERSENGFAI — Web Designer & Developer",
   description: "Portfolio of MERSENGFAI, a web designer and developer based in Phnom Penh, Cambodia.",
   icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
+  other: { "codex-preview": "development" },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

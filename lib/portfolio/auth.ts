@@ -1,10 +1,13 @@
-import { env } from "cloudflare:workers";
-
 export const SESSION_COOKIE = "mersengfai_admin";
 const MAX_AGE = 60 * 60 * 12;
 
-function runtimeValue(key: string) {
-  return String((env as unknown as Record<string, unknown>)[key] ?? process.env[key] ?? "");
+async function runtimeValue(key: string) {
+  try {
+    const { env } = await import("cloudflare:workers");
+    return String((env as unknown as Record<string, unknown>)[key] ?? process.env[key] ?? "");
+  } catch {
+    return String(process.env[key] ?? "");
+  }
 }
 
 function encode(bytes: Uint8Array) {
@@ -25,13 +28,13 @@ function equalBytes(a: Uint8Array, b: Uint8Array) {
 }
 
 export async function passwordMatches(candidate: string) {
-  const expected = runtimeValue("ADMIN_PASSWORD");
+  const expected = await runtimeValue("ADMIN_PASSWORD");
   if (!expected || !candidate) return false;
   return equalBytes(await digest(candidate), await digest(expected));
 }
 
 async function signature(payload: string) {
-  const secret = runtimeValue("ADMIN_SESSION_SECRET");
+  const secret = await runtimeValue("ADMIN_SESSION_SECRET");
   if (!secret) return "";
   const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
   return encode(new Uint8Array(await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(payload))));

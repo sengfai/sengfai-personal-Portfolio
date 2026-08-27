@@ -26,7 +26,7 @@ export type PortfolioContent = {
 
 export const DEFAULT_CONTENT: PortfolioContent = {
   general: {
-    heroTitle: "MERSENGFAI",
+    heroTitle: "PORTFOLIO",
     discipline: "UI / UX / WEB",
     name: "MERSENGFAI",
     role: "WEB DESIGNER & DEVELOPER",
@@ -34,8 +34,8 @@ export const DEFAULT_CONTENT: PortfolioContent = {
     quote: "I DESIGN DIGITAL EXPERIENCES THAT ARE INTUITIVE, BEAUTIFUL, AND IMPACTFUL.",
     location: "PHNOM PENH, CAMBODIA",
     education: "ITC, CLASS OF 2019",
-    availability: "Available for selected work",
-    portraitUrl: "/mersengfai-portrait.webp",
+    availability: "Available for freelance",
+    portraitUrl: "/mersengfai-portrait-hero.png",
   },
   about: {
     intro: "I’m a web designer and developer focused on creating modern, accessible, and user-friendly digital experiences.",
@@ -45,8 +45,8 @@ export const DEFAULT_CONTENT: PortfolioContent = {
   services: [
     { title: "UI/UX Design", text: "Clear interfaces shaped around real users and practical goals." },
     { title: "Web Design", text: "Responsive visual systems that feel consistent on every screen." },
-    { title: "Interaction", text: "Purposeful motion, feedback, and details that make products feel alive." },
-    { title: "Development", text: "Reliable frontend builds connected cleanly to APIs and content." },
+    { title: "Interaction Design", text: "Purposeful motion, feedback, and details that make products feel alive." },
+    { title: "Prototyping", text: "Turning ideas into clickable flows and user journeys." },
     { title: "Design Systems", text: "Reusable patterns that keep growing products organized and coherent." },
   ],
   process: [
@@ -62,7 +62,7 @@ export const DEFAULT_CONTENT: PortfolioContent = {
     { title: "Informal Economy", type: "Web design / Development", url: "", imageUrl: "" },
     { title: "Digital Content CMS", type: "Frontend / Integration", url: "", imageUrl: "" },
   ],
-  tools: ["Figma", "Next.js", "React", "Vue.js", "Nuxt", "TypeScript", "Tailwind", "Laravel", "PostgreSQL", "Supabase"],
+  tools: ["Figma", "Adobe XD", "Photoshop", "Illustrator", "Webflow"],
   links: {
     linkedin: "https://www.linkedin.com/in/fai-merseng-3b7858153/",
     github: "https://github.com/sengfai/main",
