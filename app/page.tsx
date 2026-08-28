@@ -35,6 +35,7 @@ export default async function Home() {
         </header>
 
         <section className="hero-poster" aria-labelledby="portfolio-title">
+          <div className="hero-lightfield" aria-hidden="true"><span /><span /><span /></div>
           <h1 id="portfolio-title" aria-label={heroTitle}>
             {Array.from(heroTitle).map((letter, index) => (
               <span aria-hidden="true" key={`${letter}-${index}`}>
