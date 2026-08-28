@@ -1,21 +1,66 @@
 import {
-  ArrowUpRight, Boxes, Check, CloudUpload, Code2, ExternalLink,
-  LayoutGrid, Mail, MonitorSmartphone, MousePointer2, Palette, PenTool,
-  Search, Sparkles,
+  ArrowRight, ArrowUpRight, Boxes, Check, CloudUpload, Code2, Database, ExternalLink,
+  LayoutGrid, Mail, MonitorSmartphone, MousePointer2, Network, Palette, PenTool,
+  Search, SearchCheck, Sparkles, type LucideIcon,
 } from "lucide-react";
+import type { CSSProperties } from "react";
+import Link from "next/link";
 import { getPortfolioContent } from "@/lib/portfolio/data";
+import { getPortfolioQuote } from "@/lib/portfolio/quotes";
 
 export const dynamic = "force-dynamic";
 
 const serviceIcons = [Palette, MonitorSmartphone, MousePointer2, Boxes, LayoutGrid];
 const processIcons = [Search, LayoutGrid, PenTool, Code2, CloudUpload];
 const projectClasses = ["project-a", "project-b", "project-c", "project-d"];
-const toolMarks = ["Fg", "Xd", "Ps", "Ai", "Wf", "Ts", "Tw", "Lv", "Pg", "Sb"];
 const aboutImageUrl = "/about-nameless-king.png";
+const simpleIconUrl = (slug: string, color = "auto") => `https://cdn.simpleicons.org/${slug}/${color}`;
+const toolLogos: Record<string, { src?: string; mark: string; color: string; Icon?: LucideIcon }> = {
+  javascript: { src: simpleIconUrl("javascript"), mark: "JS", color: "#f7df1e" },
+  typescript: { src: simpleIconUrl("typescript"), mark: "TS", color: "#3178c6" },
+  php: { src: simpleIconUrl("php"), mark: "PHP", color: "#777bb4" },
+  sql: { mark: "SQL", color: "#58d5cf", Icon: Database },
+  react: { src: simpleIconUrl("react"), mark: "Re", color: "#61dafb" },
+  "next.js": { src: simpleIconUrl("nextdotjs", "ffffff"), mark: "Nx", color: "#ffffff" },
+  "vue.js 3": { src: simpleIconUrl("vuedotjs"), mark: "Vue", color: "#4fc08d" },
+  nuxt3: { src: simpleIconUrl("nuxt"), mark: "Nu", color: "#00dc82" },
+  "tailwind css": { src: simpleIconUrl("tailwindcss"), mark: "Tw", color: "#06b6d4" },
+  bootstrap: { src: simpleIconUrl("bootstrap"), mark: "Bs", color: "#7952b3" },
+  reactstrap: { src: simpleIconUrl("bootstrap"), mark: "Rs", color: "#61dafb" },
+  pinia: { src: simpleIconUrl("pinia"), mark: "Pi", color: "#ffd859" },
+  vite: { src: simpleIconUrl("vite"), mark: "Vi", color: "#646cff" },
+  laravel: { src: simpleIconUrl("laravel"), mark: "Lv", color: "#ff2d20" },
+  "payload cms": { src: simpleIconUrl("payloadcms", "ffffff"), mark: "Pc", color: "#ffffff" },
+  supabase: { src: simpleIconUrl("supabase"), mark: "Sb", color: "#3fcf8e" },
+  "supabase rest apis": { src: simpleIconUrl("supabase"), mark: "API", color: "#3fcf8e" },
+  "rest apis": { mark: "API", color: "#b8894b", Icon: Network },
+  postgresql: { src: simpleIconUrl("postgresql"), mark: "Pg", color: "#4169e1" },
+  mysql: { src: simpleIconUrl("mysql"), mark: "My", color: "#4479a1" },
+  "supabase postgresql": { src: simpleIconUrl("postgresql"), mark: "SP", color: "#3fcf8e" },
+  "node.js": { src: simpleIconUrl("nodedotjs"), mark: "Nd", color: "#5fa04e" },
+  docker: { src: simpleIconUrl("docker"), mark: "Do", color: "#2496ed" },
+  pgadmin: { src: simpleIconUrl("postgresql"), mark: "pA", color: "#4169e1" },
+  "google seo": { src: simpleIconUrl("google"), mark: "G", color: "#4285f4", Icon: SearchCheck },
+  git: { src: simpleIconUrl("git"), mark: "Gt", color: "#f05032" },
+};
+
+function getToolLogo(tool: string) {
+  const logo = toolLogos[tool.trim().toLowerCase()];
+  if (logo) return logo;
+  const mark = tool
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
+  return { mark: mark || "TL", color: "#cf343f", Icon: Code2 };
+}
 
 export default async function Home() {
   const content = await getPortfolioContent();
   const { general, about, links } = content;
+  const quote = await getPortfolioQuote();
   const heroTitle =
     general.heroTitle.trim().toUpperCase() === general.name.trim().toUpperCase()
       ? "PORTFOLIO"
@@ -28,8 +73,23 @@ export default async function Home() {
   return (
     <main className="site-shell" id="top">
       <div className="portfolio-board">
-        <header className="topbar">
-          <a className="mini-brand" href="#top">Creative portfolio</a>
+        <header className="topbar mb-5">
+          <nav className="top-nav" aria-label="Main navigation">
+            <Link href="/projects">Projects</Link>
+            <Link href="/journal">Journal</Link>
+            <a href="#contact">Contact</a>
+          </nav>
+          <details className="mobile-menu">
+            <summary aria-label="Open navigation menu">
+              <span className="hamburger-lines"><i /><i /><i /></span>
+              <span>Menu</span>
+            </summary>
+            <nav aria-label="Mobile navigation">
+              <Link href="/projects">Projects</Link>
+              <Link href="/journal">Journal</Link>
+              <a href="#contact">Contact</a>
+            </nav>
+          </details>
           <div className="top-line" />
           <a className="availability" href="#contact">{availability} <i /></a>
         </header>
@@ -50,7 +110,11 @@ export default async function Home() {
                 <p className="micro-copy">USER EXPERIENCE<br />USER INTERFACE<br />WEB DEVELOPMENT</p>
                 <span className="red-rule" />
               </div>
-              <blockquote><span>“</span>{general.quote}<em>MF</em></blockquote>
+              <blockquote>
+                <span>&quot;</span>
+                {quote.text}
+                <em className="signature-mark">{quote.author}</em>
+              </blockquote>
             </div>
 
             <div className="hero-portrait">
@@ -94,7 +158,7 @@ export default async function Home() {
           <div className="board-section projects-panel" id="work">
             <div className="section-title section-title-row">
               <div><h2>FEATURED WORK</h2><span /></div>
-              {links.github && <a href={links.github} target="_blank" rel="noreferrer">View GitHub <ArrowUpRight /></a>}
+              <Link href="/projects">View more projects <ArrowRight /></Link>
             </div>
             <div className="project-grid">
               {content.projects.map((project, index) => {
@@ -116,15 +180,31 @@ export default async function Home() {
 
           <div className="board-section tools-panel" id="tools">
             <div className="section-title"><h2>TOOLS I USE</h2><span /></div>
-            <div className="tool-list">{content.tools.slice(0, 5).map((tool, index) => <div key={`${tool}-${index}`}><span>{toolMarks[index] ?? String(index + 1)}</span><strong>{tool}</strong></div>)}</div>
-            <blockquote><Sparkles /> “{general.quote}”</blockquote>
+            <div className="tool-list">
+              {content.tools.map((tool, index) => {
+                const logo = getToolLogo(tool);
+                const Icon = logo.Icon;
+                return (
+                  <div
+                    className="tool-card"
+                    key={`${tool}-${index}`}
+                    style={{ "--tool-accent": logo.color } as CSSProperties}
+                  >
+                    <span className="tool-logo">
+                      {logo.src ? <img src={logo.src} alt="" loading="lazy" /> : Icon ? <Icon aria-hidden="true" /> : logo.mark}
+                    </span>
+                    <strong>{tool}</strong>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </section>
 
         <footer className="contact-footer" id="contact">
           <div>
-            <div className="section-title"><h2>LET’S COLLABORATE</h2><span /></div>
-            <p>Have a project in mind or just want to say hello? I’d love to hear from you.</p>
+            <div className="section-title"><h2>LET&apos;S COLLABORATE</h2><span /></div>
+            <p>Have a project in mind or just want to say hello? I&apos;d love to hear from you.</p>
             {links.linkedin && <a href={links.linkedin} target="_blank" rel="noreferrer"><ArrowUpRight /> LinkedIn</a>}
             {links.github && <a href={links.github} target="_blank" rel="noreferrer"><Code2 /> GitHub repository</a>}
             {links.email && <a href={`mailto:${links.email}`}><Mail /> {links.email}</a>}
@@ -132,11 +212,11 @@ export default async function Home() {
           <div className="scan-panel">
             <h2>SCAN TO CONNECT</h2>
             <div>
-              {links.linkedin && <a className="qr-card" href={links.linkedin} target="_blank" rel="noreferrer"><span>in</span><strong>LINKEDIN</strong></a>}
+              {links.linkedin && <a className="qr-card" href={links.linkedin} target="_blank" rel="noreferrer"><span className="qr-image-frame"><img src="/linkedin-qr.png" alt="LinkedIn QR code" loading="lazy" /></span><strong>LINKEDIN</strong></a>}
               {links.github && <a className="qr-card" href={links.github} target="_blank" rel="noreferrer"><span>gh</span><strong>GITHUB</strong></a>}
             </div>
           </div>
-          <div className="contact-center"><Sparkles /><p>{content.footerTagline}</p><span>MF</span></div>
+          <div className="contact-center"><Sparkles /><p>{content.footerTagline}</p><span className="signature-mark contact-signature">Mersengfai</span></div>
           <div className="contact-cta"><Mail /><p>{general.role}</p>{links.github && <a href={links.github} target="_blank" rel="noreferrer">Explore my code <ExternalLink /></a>}</div>
         </footer>
       </div>
